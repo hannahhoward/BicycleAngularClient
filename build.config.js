@@ -30,7 +30,6 @@ module.exports = {
     ctpl: [ 'src/common/**/*.tpl.html' ],
 
     html: [ 'src/index.html' ],
-    less: 'src/less/main.less',
     sass: 'src/sass'
   },
 
@@ -73,12 +72,13 @@ module.exports = {
   vendor_files: {
     js: [
       'vendor/angular/angular.js',
-      'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
-      'vendor/angular-placeholders/dist/placeholders-0.0.1-SNAPSHOT.min.js',
       'vendor/angular-ui-utils/ui-utils.js',
-      'vendor/angular-ui-router/release/angular-ui-router.js'
+      'vendor/angular-ui-router/release/angular-ui-router.js',
+      'vendor/angular-strap/dist/angular-strap.js',
+      'vendor/angular-strap/dist/angular-strap.tpl.js'
     ],
     css: [
+      'vendor/animate-css/animate.css'
     ],
     assets: [
     ]

@@ -163,9 +163,9 @@ module.exports = function ( grunt ) {
       build_css: {
         src: [
           '<%= vendor_files.css %>',
-          '<%= compass.build.options.cssDir %>'
+          '<%= compass.build.options.cssDir %>/main.css'
         ],
-        dest: '<%= compass.build.options.cssDir %>'
+        dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
       },
       /**
        * The `compile_js` target is the concatenation of our application source
@@ -276,7 +276,7 @@ module.exports = function ( grunt ) {
       build: {
         options: {
           sassDir: '<%= app_files.sass %>',
-          cssDir: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css',
+          cssDir: '<%= build_dir %>/assets/compass-css',
         }
       },
       compile: {
@@ -408,7 +408,7 @@ module.exports = function ( grunt ) {
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
-          '<%= compass.build.options.cssDir %>'
+          '<%= compass.build.options.cssDir %>/main.css'
         ]
       },
 
