@@ -15,7 +15,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-coffeelint');
   //grunt.loadNpmTasks('grunt-recess');
-  grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-html2js');
@@ -140,10 +140,20 @@ module.exports = function ( grunt ) {
           }
         ]
       },
+      build_vendorcss: {
+        files: [
+          {
+            src: [ '<%= vendor_files.css %>' ],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      },
       compile_assets: {
         files: [
           {
-            src: [ '**' ],
+            src: [ '**', "!*.css", "!*.css.map" ],
             dest: '<%= compile_dir %>/assets',
             cwd: '<%= build_dir %>/assets',
             expand: true
@@ -160,12 +170,12 @@ module.exports = function ( grunt ) {
        * The `build_css` target concatenates compiled CSS and vendor CSS
        * together.
        */
-      build_css: {
+      compile_css: {
         src: [
           '<%= vendor_files.css %>',
-          '<%= compass.build.options.cssDir %>/main.css'
+          '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
         ],
-        dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+        dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
       },
       /**
        * The `compile_js` target is the concatenation of our application source
@@ -271,18 +281,21 @@ module.exports = function ( grunt ) {
     /**
      * Using compass here
      */
-
-    compass: {
-      build: {
-        options: {
-          sassDir: '<%= app_files.sass %>',
-          cssDir: '<%= build_dir %>/assets/compass-css',
-        }
-      },
+    sass: {                                 // task
       compile: {
         options: {
-          sassDir:  '<%= compass.build.options.sassDir %>',
-          cssDir: '<%= compass.build.options.cssDir %>',
+          outputStyle: 'compressed'
+        },                            // target
+        files: {                        // dictionary of files
+          '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.sass %>' // 'destination': 'source'
+        }
+      },
+      build: {                              // another target
+        options: {                      // dictionary of render options
+          sourceMap: true
+        },
+        files: {
+          '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.sass %>' // 'destination': 'source'
         }
       }
     },
@@ -408,7 +421,7 @@ module.exports = function ( grunt ) {
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
-          '<%= compass.build.options.cssDir %>/main.css'
+          '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
         ]
       },
 
@@ -421,8 +434,7 @@ module.exports = function ( grunt ) {
         dir: '<%= compile_dir %>',
         src: [
           '<%= concat.compile_js.dest %>',
-          '<%= vendor_files.css %>',
-          '<%= compass.compile.options.cssDir %>'
+          '<%= concat.compile_css.dest %>'
         ]
       }
     },
@@ -539,9 +551,9 @@ module.exports = function ( grunt ) {
       },
        */
 
-      compass: {
+      sass: {
         files: [ 'src/**/*.sass', 'src/**/*.scss' ],
-        tasks: [ 'compass:build' ] //consider compass watch here (but needs grunt-concurrent (?))
+        tasks: [ 'sass:build' ] //consider compass watch here (but needs grunt-concurrent (?))
       },
 
       /**
@@ -595,8 +607,8 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'compass:build',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
+    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'sass:build',
+    'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
     'karma:continuous'
   ]);
@@ -606,7 +618,7 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'compass:compile', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
+    'sass:compile', 'concat:compile_css', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
   ]);
 
   /**

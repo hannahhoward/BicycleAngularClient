@@ -9,6 +9,7 @@ module.exports = {
    */
   build_dir: 'build',
   compile_dir: 'bin',
+  tmp_dir: 'tmp',
 
   /**
    * This is a collection of file patterns that refer to our app code (the
@@ -30,7 +31,7 @@ module.exports = {
     ctpl: [ 'src/common/**/*.tpl.html' ],
 
     html: [ 'src/index.html' ],
-    sass: 'src/sass'
+    sass: 'src/sass/main.scss'
   },
 
   /**
@@ -78,7 +79,7 @@ module.exports = {
       'vendor/angular-strap/dist/angular-strap.tpl.js'
     ],
     css: [
-      'vendor/animate-css/animate.css'
+      'vendor/animate-css/animate.min.css'
     ],
     assets: [
     ]
