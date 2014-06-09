@@ -1,13 +1,13 @@
 {
-  "author": "Josh David Miller",
-  "name": "ng-boilerplate",
-  "version": "0.3.1",
-  "homepage": "http://bit.ly/ng-boilerplate",
+  "author": "Hannah Howard",
+  "name": "Bike Plus Plus",
+  "version": "0.0.1",
+  "homepage": "http://plusplus.bike",
   "licenses": {
     "type": "MIT",
-    "url": "https://raw.github.com/joshdmiller/ng-boilerplate/master/LICENSE"
+    "url": "https://raw.github.com/hannahhoward/BicycleAngularClient/master/LICENSE"
   },
-  "bugs": "https://github.com/joshdmiller/ng-boilerplate/issues",
+  "bugs": "https://github.com/hannahhoward/BicycleAngularClient/issues",
   "repository": {
     "type": "git",
     "url": "git@github.com:joshdmiller/ng-boilerplate.git"
